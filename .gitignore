@@ -1,0 +1,27 @@
+# Arquivos de configuração
+.env
+
+# Dependências
+/node_modules
+
+# Arquivos de compilação
+/build
+/dist
+
+# Arquivos de log
+/logs
+
+# Arquivos de cache
+/.cache
+
+# Arquivos temporários
+.tmp
+.temp
+
+# Outros arquivos gerados
+.DS_Store
+Thumbs.db
+
+# Editor / IDE
+.vscode/
+.idea/
