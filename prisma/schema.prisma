@@ -1,0 +1,70 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Comment {
+  comment_id Int      @id @default(autoincrement())
+  post_id    Int
+  user_id    Int
+  content    String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime
+  Post       Post     @relation(fields: [post_id], references: [post_id])
+  User       User     @relation(fields: [user_id], references: [user_id])
+}
+
+model Follower {
+  follower_id Int      @id @default(autoincrement())
+  user_id     Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime
+  User        User     @relation(fields: [user_id], references: [user_id])
+}
+
+model Hashtag {
+  hashtag_id  Int           @id @default(autoincrement())
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime
+  PostHashtag PostHashtag[]
+}
+
+model Post {
+  post_id     Int           @id @default(autoincrement())
+  user_id     Int
+  title       String
+  content     String
+  likes       Int
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime
+  Comment     Comment[]
+  User        User          @relation(fields: [user_id], references: [user_id])
+  PostHashtag PostHashtag[]
+}
+
+model PostHashtag {
+  post_id    Int
+  hashtag_id Int
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime
+  Hashtag    Hashtag  @relation(fields: [hashtag_id], references: [hashtag_id])
+  Post       Post     @relation(fields: [post_id], references: [post_id])
+
+  @@id([post_id, hashtag_id])
+}
+
+model User {
+  user_id   Int        @id @default(autoincrement())
+  name      String
+  email     String     @unique
+  password  String
+  createdAt DateTime   @default(now())
+  updatedAt DateTime
+  Comment   Comment[]
+  Follower  Follower[]
+  Post      Post[]
+}
